@@ -222,12 +222,12 @@ Where: n, m = string lengths, k = candidates in phonetic group
 
 ## Challenges Handled
 
-- ✅ Phonetic similarity (sound-alikes)
-- ✅ Transliteration (Abdul Rasheed ↔ Abd al Rasheed)
-- ✅ Nicknames (Nicholas ↔ Nick)
-- ✅ Titles and honorifics (Dr., Mr., Prof.)
-- ✅ Truncated names (Blankenship ↔ Blankesh)
-- ✅ Missing components (Philip Charles ↔ Philip)
+-  Phonetic similarity (sound-alikes)
+-  Transliteration (Abdul Rasheed ↔ Abd al Rasheed)
+-  Nicknames (Nicholas ↔ Nick)
+-  Titles and honorifics (Dr., Mr., Prof.)
+-  Truncated names (Blankenship ↔ Blankesh)
+-  Missing components (Philip Charles ↔ Philip)
 - ✅ Out-of-order components
 - ✅ Initials
 - ✅ Name split inconsistencies
