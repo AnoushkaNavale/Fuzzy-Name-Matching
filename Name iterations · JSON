@@ -1,0 +1,78 @@
+{
+  "Siddaramaiah": {
+    "base_name": "Siddaramaiah",
+    "phonetic": [
+      "Syddaramayah",
+      "Zyddaramayah",
+      "Siddaramaiah",
+      "Ziddaramaiah"
+    ],
+    "spelling": [
+      "Sidaramaiah",
+      "Siddaramaiah",
+      "Sidddaramaiah",
+      "Siddaramaiahh",
+      "Siddarramaiah",
+      "Siddarammaiah",
+      "Ssiddaramaiah"
+    ],
+    "soundex_code": "S365",
+    "metaphone_code": "SDDRMH"
+  },
+  "Catherine": {
+    "base_name": "Catherine",
+    "phonetic": [
+      "Catherine",
+      "Katherine",
+      "Katheryne",
+      "Catheryne"
+    ],
+    "spelling": [
+      "Cattherine",
+      "Catherinne",
+      "Catherrine",
+      "Cathherine",
+      "Catherine",
+      "Ccatherine"
+    ],
+    "soundex_code": "C365",
+    "metaphone_code": "C0RN"
+  },
+  "Nicholas": {
+    "base_name": "Nicholas",
+    "phonetic": [
+      "Nikholaz",
+      "Nicholas",
+      "Nykholaz",
+      "Nycholaz",
+      "Nicholaz",
+      "Nikholas",
+      "Nykholas",
+      "Nycholas"
+    ],
+    "spelling": [
+      "Nichholas",
+      "Nicholas",
+      "Niccholas",
+      "Nnicholas",
+      "Nichollas",
+      "Nicholass"
+    ],
+    "soundex_code": "N242",
+    "metaphone_code": "NXLS"
+  },
+  "Abdul": {
+    "base_name": "Abdul",
+    "phonetic": [
+      "Abdul"
+    ],
+    "spelling": [
+      "Abddul",
+      "Abdul",
+      "Abbdul",
+      "Abdull"
+    ],
+    "soundex_code": "A134",
+    "metaphone_code": "ABDL"
+  }
+}

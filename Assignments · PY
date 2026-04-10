@@ -1,0 +1,648 @@
+"""
+Assignment Implementation Script
+Covers all 9 assignments from the internship curriculum
+"""
+
+from fuzzy_name_matching import (
+    CommonKeyMethod, ListMethod, EditDistanceMethod,
+    StatisticalMethod, WordEmbeddingMethod, TwoPassHybridMethod,
+    NameVariationCalculator
+)
+import json
+from typing import List, Dict, Set
+
+
+# ============================================================================
+# ASSIGNMENT 1: Identifying various misinterpretations
+# ============================================================================
+
+def assignment_1_misinterpretations():
+    """
+    Demonstrate all five fuzzy matching methods:
+    1. Common key method
+    2. List method
+    3. Edit distance method
+    4. Statistical similarity method
+    5. Word embedding method
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 1: Identifying Misinterpretations in Noun Identification")
+    print("=" * 80)
+    
+    test_cases = [
+        # Phonetic similarity
+        ("Catherine", "Katherine", "Phonetic Similarity"),
+        # Transliteration
+        ("Abdul Rasheed", "Abd al Rasheed", "Transliteration"),
+        # Nicknames
+        ("Nicholas", "Nick", "Nickname"),
+        # Titles
+        ("Dr. Smith", "Smith", "Title Removal"),
+        # Truncation
+        ("Blankenship", "Blankesh", "Truncated Name"),
+        # Missing components
+        ("Philip Charles", "Philip", "Missing Component"),
+    ]
+    
+    print("\n1. COMMON KEY METHOD (Soundex)")
+    print("-" * 80)
+    for name1, name2, case_type in test_cases:
+        s1 = CommonKeyMethod.soundex(name1)
+        s2 = CommonKeyMethod.soundex(name2)
+        match = "MATCH" if s1 == s2 else "NO MATCH"
+        print(f"{case_type:25} | {name1:20} [{s1}] vs {name2:20} [{s2}] -> {match}")
+    
+    print("\n2. LIST METHOD (Generate Variations)")
+    print("-" * 80)
+    name = "Catherine"
+    variations = ListMethod.generate_phonetic_variations(name)
+    spelling_vars = ListMethod.generate_spelling_variations(name)
+    print(f"Phonetic variations of '{name}': {len(variations)}")
+    print(f"Sample: {list(variations)[:8]}")
+    print(f"\nSpelling variations: {len(spelling_vars)}")
+    print(f"Sample: {list(spelling_vars)[:8]}")
+    
+    print("\n3. EDIT DISTANCE METHOD")
+    print("-" * 80)
+    for name1, name2, case_type in test_cases[:4]:
+        lev = EditDistanceMethod.levenshtein_distance(name1, name2)
+        dam = EditDistanceMethod.damerau_levenshtein_distance(name1, name2)
+        jaro = EditDistanceMethod.jaro_winkler_similarity(name1, name2)
+        print(f"{case_type}:")
+        print(f"  {name1} <-> {name2}")
+        print(f"  Levenshtein: {lev}, Damerau: {dam}, Jaro-Winkler: {jaro:.3f}")
+    
+    print("\n4. STATISTICAL SIMILARITY METHOD")
+    print("-" * 80)
+    stat_method = StatisticalMethod()
+    for name1, name2, case_type in test_cases:
+        score = stat_method.calculate_similarity_score(name1, name2)
+        is_match = stat_method.is_match(name1, name2)
+        print(f"{name1:20} <-> {name2:20} | Score: {score:.3f} | Match: {is_match}")
+    
+    print("\n5. WORD EMBEDDING METHOD")
+    print("-" * 80)
+    embedding = WordEmbeddingMethod()
+    semantic_tests = [
+        ("Company", "Corporation"),
+        ("Inc", "Incorporated"),
+        ("Ltd", "Limited"),
+        ("Mr", "Mrs"),
+        ("Street", "Avenue"),
+    ]
+    for word1, word2 in semantic_tests:
+        similar = embedding.are_semantically_similar(word1, word2)
+        print(f"{word1:20} <-> {word2:20} | Semantically Similar: {similar}")
+
+
+# ============================================================================
+# ASSIGNMENT 2: Edit Distance Sub-methods
+# ============================================================================
+
+def assignment_2_edit_distance_submethods():
+    """
+    Deep dive into edit distance methods:
+    - Levenshtein distance
+    - Damerau distance
+    - Hamming distance
+    - Jaro distance
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 2: Edit Distance Sub-Methods")
+    print("=" * 80)
+    
+    test_pairs = [
+        ("kitten", "sitting"),
+        ("Saturday", "Sunday"),
+        ("Siddaramaiah", "Sidharamaiah"),
+        ("Catherine", "Katherine"),
+    ]
+    
+    print("\nComparing Edit Distance Algorithms:")
+    print("-" * 80)
+    print(f"{'Name 1':20} {'Name 2':20} {'Levenshtein':12} {'Damerau':12} {'Jaro':12}")
+    print("-" * 80)
+    
+    for name1, name2 in test_pairs:
+        lev = EditDistanceMethod.levenshtein_distance(name1, name2)
+        dam = EditDistanceMethod.damerau_levenshtein_distance(name1, name2)
+        jaro = EditDistanceMethod.jaro_similarity(name1, name2)
+        print(f"{name1:20} {name2:20} {lev:<12} {dam:<12} {jaro:<12.3f}")
+    
+    print("\nHamming Distance (requires equal length strings):")
+    print("-" * 80)
+    equal_length_pairs = [
+        ("Katherine", "Kathryn  "),  # Padded to same length
+        ("ABCDEFGH", "ABCDFFGH"),
+    ]
+    
+    for name1, name2 in equal_length_pairs:
+        try:
+            ham = EditDistanceMethod.hamming_distance(name1, name2)
+            print(f"{name1} <-> {name2} | Hamming Distance: {ham}")
+        except ValueError as e:
+            print(f"{name1} <-> {name2} | Error: {e}")
+    
+    print("\nJaro-Winkler Similarity (with prefix bonus):")
+    print("-" * 80)
+    for name1, name2 in test_pairs:
+        jaro = EditDistanceMethod.jaro_similarity(name1, name2)
+        jaro_w = EditDistanceMethod.jaro_winkler_similarity(name1, name2)
+        print(f"{name1:20} <-> {name2:20} | Jaro: {jaro:.3f} | Jaro-Winkler: {jaro_w:.3f}")
+
+
+# ============================================================================
+# ASSIGNMENT 3: Two-Pass Hybrid Method
+# ============================================================================
+
+def assignment_3_two_pass_hybrid():
+    """
+    Demonstrate the two-pass hybrid method combining:
+    - Common key encoding (first pass)
+    - Statistical matching (second pass)
+    And derive the mathematical equation
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 3: Two-Pass Hybrid Method")
+    print("=" * 80)
+    
+    print("\nMATHEMATICAL EQUATION:")
+    print("-" * 80)
+    print("Pass 1 (Encoding): K = Soundex(Name)")
+    print("Pass 2 (Matching): Score = w1·Lev + w2·Jaro + w3·Phonetic")
+    print("Where: w1, w2, w3 are weights (sum to 1.0)")
+    print("Final Match: Score ≥ Threshold")
+    print()
+    print("Implementation:")
+    print("Score = 0.3·(1 - Lev/MaxLen) + 0.3·Jaro + 0.2·Soundex + 0.2·Metaphone")
+    
+    hybrid = TwoPassHybridMethod()
+    
+    # Build database
+    print("\n\nBuilding Database:")
+    print("-" * 80)
+    names_database = [
+        "Siddaramaiah", "Sidharamaiah", "Siddharamaiah", "Sidaramaiah",
+        "Catherine", "Katherine", "Kathryn", "Cathrine",
+        "Abdul Rasheed", "Abd al Rasheed", "Abdul Rashid",
+        "John Smith", "Jon Smith", "Jonathan Smith",
+        "Nicholas", "Nick", "Nikhil", "Nicolas",
+    ]
+    
+    for name in names_database:
+        hybrid.add_to_database(name)
+        key = hybrid.encode(name)
+        print(f"Added: {name:25} -> Key: {key}")
+    
+    # Test queries
+    print("\n\nTesting Queries:")
+    print("-" * 80)
+    queries = ["Siddaramaiah", "Katherine", "Abdul Rasheed", "Nick"]
+    
+    for query in queries:
+        print(f"\nQuery: '{query}'")
+        key = hybrid.encode(query)
+        print(f"Encoded Key: {key}")
+        matches = hybrid.search(query, threshold=0.6)
+        print(f"Matches found: {len(matches)}")
+        for i, (match_name, score) in enumerate(matches, 1):
+            print(f"  {i}. {match_name:25} (Score: {score:.3f})")
+
+
+# ============================================================================
+# ASSIGNMENT 4: Calculating Correlation Closeness
+# ============================================================================
+
+def assignment_4_correlation_closeness():
+    """
+    Implement various methods to calculate correlation between input and output
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 4: Calculating Correlation Closeness")
+    print("=" * 80)
+    
+    test_cases = [
+        ("Catherine", "Katherine"),
+        ("Siddaramaiah", "Sidharamaiah"),
+        ("Company Inc", "Corporation Incorporated"),
+    ]
+    
+    stat = StatisticalMethod()
+    
+    print("\nMULTI-METHOD CORRELATION ANALYSIS:")
+    print("-" * 80)
+    
+    for input_name, output_name in test_cases:
+        
+        print(f"\n{input_name} -> {output_name}")
+        print("-" * 40)
+        
+        # Method 1: Edit Distance (normalized)
+        lev_dist = EditDistanceMethod.levenshtein_distance(input_name, output_name)
+        max_len = max(len(input_name), len(output_name))
+        lev_similarity = 1 - (lev_dist / max_len) if max_len > 0 else 0
+        print(f"1. Levenshtein Similarity: {lev_similarity:.3f}")
+        
+        # Method 2: Jaro-Winkler
+        jaro_sim = EditDistanceMethod.jaro_winkler_similarity(input_name, output_name)
+        print(f"2. Jaro-Winkler Similarity: {jaro_sim:.3f}")
+        
+        # Method 3: Phonetic Match
+        soundex_match = 1.0 if CommonKeyMethod.soundex(input_name) == CommonKeyMethod.soundex(output_name) else 0.0
+        print(f"3. Phonetic Match (Soundex): {soundex_match:.3f}")
+        
+        # Method 4: Combined Statistical Score
+        combined_score = stat.calculate_similarity_score(input_name, output_name)
+        print(f"4. Combined Statistical Score: {combined_score:.3f}")
+        
+        # Method 5: Accuracy Classification
+        if combined_score >= 0.9:
+            accuracy = "EXCELLENT"
+        elif combined_score >= 0.8:
+            accuracy = "VERY GOOD"
+        elif combined_score >= 0.7:
+            accuracy = "GOOD"
+        elif combined_score >= 0.6:
+            accuracy = "FAIR"
+        else:
+            accuracy = "POOR"
+        
+        print(f"5. Accuracy Rating: {accuracy}")
+
+
+# ============================================================================
+# ASSIGNMENT 5: Exploring NLP Library Tools
+# ============================================================================
+
+def assignment_5_nlp_libraries():
+    """
+    Explore various NLP library tools
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 5: Exploring NLP Library Tools")
+    print("=" * 80)
+    
+    print("\nPython Libraries Used in This Implementation:")
+    print("-" * 80)
+    
+    libraries = {
+        "itertools": "Generate permutations and combinations of name variations",
+        "string": "String manipulation and character operations",
+        "re": "Regular expressions for pattern matching",
+        "collections": "DefaultDict for efficient data structures",
+        "typing": "Type hints for better code documentation"
+    }
+    
+    for lib, purpose in libraries.items():
+        print(f"{lib:15} : {purpose}")
+    
+    print("\n\nKey NLP Concepts Implemented:")
+    print("-" * 80)
+    concepts = [
+        "Tokenization - Breaking names into components",
+        "Phonetic Encoding - Converting to sound-based representations",
+        "String Similarity - Measuring textual distance",
+        "Fuzzy Matching - Approximate string matching",
+        "Semantic Analysis - Understanding meaning relationships",
+    ]
+    
+    for i, concept in enumerate(concepts, 1):
+        print(f"{i}. {concept}")
+    
+    print("\n\nDemonstration: String Manipulation")
+    print("-" * 80)
+    name = "Siddaramaiah"
+    print(f"Original: {name}")
+    print(f"Uppercase: {name.upper()}")
+    print(f"Lowercase: {name.lower()}")
+    print(f"Capitalized: {name.capitalize()}")
+    print(f"Length: {len(name)}")
+    print(f"First 4 chars: {name[:4]}")
+    print(f"Soundex code: {CommonKeyMethod.soundex(name)}")
+
+
+# ============================================================================
+# ASSIGNMENT 6: Implementing Lemmatization and Stemming
+# ============================================================================
+
+def assignment_6_lemmatization_stemming():
+    """
+    Implement basic lemmatization and stemming concepts
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 6: Lemmatization and Stemming")
+    print("=" * 80)
+    
+    print("\nNote: Full NLTK implementation requires library installation")
+    print("Demonstrating basic stemming logic:")
+    print("-" * 80)
+    
+    def simple_stem(word: str) -> str:
+        """Simple stemming by removing common suffixes"""
+        suffixes = ['ing', 'ed', 'ly', 'es', 's', 'er', 'est']
+        word_lower = word.lower()
+        
+        for suffix in suffixes:
+            if word_lower.endswith(suffix) and len(word_lower) > len(suffix) + 2:
+                return word_lower[:-len(suffix)]
+        
+        return word_lower
+    
+    test_words = [
+        "running", "runner", "runs",
+        "organization", "organizations",
+        "similarity", "similar", "similarly"
+    ]
+    
+    print(f"{'Original Word':20} {'Stemmed':20}")
+    print("-" * 40)
+    for word in test_words:
+        stemmed = simple_stem(word)
+        print(f"{word:20} {stemmed:20}")
+    
+    print("\n\nName Normalization (Similar to Lemmatization):")
+    print("-" * 80)
+    
+    def normalize_name(name: str) -> str:
+        """Normalize name by removing titles, punctuation, extra spaces"""
+        # Remove common titles
+        titles = ['mr', 'mrs', 'ms', 'dr', 'prof', 'sir', 'madam']
+        name_lower = name.lower()
+        
+        for title in titles:
+            name_lower = name_lower.replace(title + '.', '').replace(title, '')
+        
+        # Remove punctuation and extra spaces
+        name_clean = ''.join(c if c.isalnum() or c.isspace() else ' ' for c in name_lower)
+        name_clean = ' '.join(name_clean.split())
+        
+        return name_clean.title()
+    
+    test_names = [
+        "Dr. John Smith",
+        "Mrs. Catherine Jones",
+        "Prof. Abdul Rasheed",
+        "Mr.Nicholas-Brown"
+    ]
+    
+    print(f"{'Original Name':30} {'Normalized Name':30}")
+    print("-" * 60)
+    for name in test_names:
+        normalized = normalize_name(name)
+        print(f"{name:30} {normalized:30}")
+
+
+# ============================================================================
+# ASSIGNMENT 7: Creating List of Appropriate Iterations
+# ============================================================================
+
+def assignment_7_create_iterations():
+    """
+    Create comprehensive list of name iterations
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 7: Creating List of Appropriate Iterations")
+    print("=" * 80)
+    
+    def generate_all_iterations(base_name: str) -> Dict[str, Set[str]]:
+        """Generate all types of iterations for a name"""
+        
+        iterations = {
+            'phonetic': ListMethod.generate_phonetic_variations(base_name),
+            'spelling': ListMethod.generate_spelling_variations(base_name),
+            'original': {base_name}
+        }
+        
+        # Add case variations
+        iterations['case_variations'] = {
+            base_name.upper(),
+            base_name.lower(),
+            base_name.capitalize(),
+            base_name.title()
+        }
+        
+        return iterations
+    
+    # Example: Generate iterations for "Siddaramaiah"
+    print("\nGenerating iterations for 'Siddaramaiah':")
+    print("-" * 80)
+    
+    all_iterations = generate_all_iterations("Siddaramaiah")
+    
+    total_count = 0
+    for category, variations in all_iterations.items():
+        count = len(variations)
+        total_count += count
+        print(f"\n{category.upper()} ({count} variations):")
+        sample = list(variations)[:10]
+        for var in sample:
+            print(f"  - {var}")
+        if count > 10:
+            print(f"  ... and {count - 10} more")
+    
+    print(f"\n\nTotal Unique Iterations: {total_count}")
+    
+    # Example 2: Catherine
+    print("\n\nGenerating iterations for 'Catherine':")
+    print("-" * 80)
+    
+    catherine_iterations = generate_all_iterations("Catherine")
+    
+    for category, variations in catherine_iterations.items():
+        count = len(variations)
+        print(f"{category}: {count} variations")
+    
+    # Calculate using mathematical formula
+    print("\n\nMathematical Calculation (as per document):")
+    print("-" * 80)
+    
+    syllables = ["Cath", "er", "ine"]
+    variants_per_syllable = [4, 4, 4]  # As per document
+    
+    phonetic_permutations = NameVariationCalculator.calculate_syllable_permutations(
+        syllables, variants_per_syllable
+    )
+    
+    total_variations = NameVariationCalculator.calculate_variations(
+        "Catherine",
+        phonetic_count=phonetic_permutations,
+        cultural_count=4,
+        misspelling_count=4,
+        nickname_count=4
+    )
+    
+    print(f"Syllable-based phonetic: {phonetic_permutations}")
+    print(f"Cultural variations: 4")
+    print(f"Common misspellings: 4")
+    print(f"Nicknames: 4")
+    print(f"TOTAL: {total_variations['total']}")
+
+
+# ============================================================================
+# ASSIGNMENT 8: Storing Iterations in File
+# ============================================================================
+
+def assignment_8_store_iterations():
+    """
+    Store iterations in a separate file (JSON format)
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 8: Storing Iterations in File")
+    print("=" * 80)
+    
+    # Generate iterations for multiple names
+    names_to_process = ["Siddaramaiah", "Catherine", "Nicholas", "Abdul"]
+    
+    all_name_iterations = {}
+    
+    for name in names_to_process:
+        iterations = {
+            'base_name': name,
+            'phonetic': list(ListMethod.generate_phonetic_variations(name)),
+            'spelling': list(ListMethod.generate_spelling_variations(name)),
+            'soundex_code': CommonKeyMethod.soundex(name),
+            'metaphone_code': CommonKeyMethod.simple_metaphone(name)
+        }
+        
+        all_name_iterations[name] = iterations
+    
+    # Save to JSON file
+    output_file = "/home/claude/name_iterations.json"
+    
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(all_name_iterations, f, indent=2, ensure_ascii=False)
+    
+    print(f"✓ Saved iterations to: {output_file}")
+    print(f"✓ Total names processed: {len(names_to_process)}")
+    
+    # Display sample
+    print("\nSample Data Structure:")
+    print("-" * 80)
+    print(json.dumps(all_name_iterations["Catherine"], indent=2)[:500] + "...")
+    
+    return output_file
+
+
+# ============================================================================
+# ASSIGNMENT 9: Search Engine Implementation with Accuracy
+# ============================================================================
+
+def assignment_9_search_engine():
+    """
+    Implement search engine that retrieves appropriate results and shows accuracy
+    """
+    print("\n" + "=" * 80)
+    print("ASSIGNMENT 9: Search Engine with Accuracy Display")
+    print("=" * 80)
+    
+    # Build comprehensive database
+    hybrid = TwoPassHybridMethod()
+    
+    database = [
+        "Siddaramaiah", "Sidharamaiah", "Siddharamaiah", "Sidaramaiah", "Sidharameya",
+        "Catherine", "Katherine", "Kathryn", "Cathrine", "Katheryn",
+        "Nicholas", "Nick", "Nikhil", "Nicolas", "Nikolas",
+        "Abdul Rasheed", "Abd al Rasheed", "Abdul Rashid", "Abdur Rasheed",
+        "John Smith", "Jon Smith", "Jonathan Smith", "Johnathan Smith",
+        "Philip Charles", "Philip", "Phil Charles", "Phillip Charles",
+    ]
+    
+    print("Building Search Database...")
+    print("-" * 80)
+    for name in database:
+        hybrid.add_to_database(name)
+    print(f"✓ Added {len(database)} names to database\n")
+    
+    # Test search queries
+    test_queries = [
+        "Siddaramaiah",
+        "Katherine",
+        "Nick",
+        "Abdul Rasheed",
+        "John Smith",
+        "Philip"
+    ]
+    
+    print("SEARCH ENGINE RESULTS:")
+    print("=" * 80)
+    
+    for query in test_queries:
+        print(f"\n🔍 Search Query: '{query}'")
+        print("-" * 80)
+        
+        matches = hybrid.search(query, threshold=0.5)
+        
+        if not matches:
+            print("❌ No matches found")
+            continue
+        
+        print(f"✓ Found {len(matches)} matches:\n")
+        
+        # Display results with accuracy
+        print(f"{'Rank':6} {'Name':25} {'Accuracy':10} {'Match Quality':15}")
+        print("-" * 70)
+        
+        for rank, (match_name, score) in enumerate(matches, 1):
+            # Convert score to percentage
+            accuracy_pct = score * 100
+            
+            # Categorize match quality
+            if score >= 0.95:
+                quality = "EXCELLENT ⭐⭐⭐"
+            elif score >= 0.85:
+                quality = "VERY GOOD ⭐⭐"
+            elif score >= 0.75:
+                quality = "GOOD ⭐"
+            elif score >= 0.65:
+                quality = "FAIR"
+            else:
+                quality = "ACCEPTABLE"
+            
+            print(f"{rank:<6} {match_name:25} {accuracy_pct:>6.2f}%   {quality:15}")
+        
+        # Show search statistics
+        print(f"\nSearch Statistics:")
+        print(f"  - Best Match: {matches[0][0]} ({matches[0][1]*100:.2f}%)")
+        print(f"  - Average Accuracy: {sum(s for _, s in matches)/len(matches)*100:.2f}%")
+
+
+# ============================================================================
+# MAIN EXECUTION
+# ============================================================================
+
+def run_all_assignments():
+    """Run all 9 assignments"""
+    
+    print("\n" + "=" * 80)
+    print("FUZZY NAME MATCHING - COMPLETE ASSIGNMENT SUITE")
+    print("Internship: Noun Obstacles and Phonetics")
+    print("Duration: June 10th - July 10th")
+    print("=" * 80)
+    
+    # Run each assignment
+    assignment_1_misinterpretations()
+    assignment_2_edit_distance_submethods()
+    assignment_3_two_pass_hybrid()
+    assignment_4_correlation_closeness()
+    assignment_5_nlp_libraries()
+    assignment_6_lemmatization_stemming()
+    assignment_7_create_iterations()
+    iterations_file = assignment_8_store_iterations()
+    assignment_9_search_engine()
+    
+    print("\n" + "=" * 80)
+    print("ALL ASSIGNMENTS COMPLETED SUCCESSFULLY! ✓")
+    print("=" * 80)
+    print(f"\nGenerated Files:")
+    print(f"  - fuzzy_name_matching.py (Main implementation)")
+    print(f"  - {iterations_file} (Name iterations database)")
+    print("\nLearning Outcomes Achieved:")
+    print("  ✓ Data correlation techniques")
+    print("  ✓ Parameter identification for noun articulation")
+    print("  ✓ Code modularity and reusability")
+    print("  ✓ Program execution flow")
+    print("=" * 80)
+
+
+if __name__ == "__main__":
+    run_all_assignments()
