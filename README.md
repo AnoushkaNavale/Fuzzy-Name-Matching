@@ -228,11 +228,11 @@ Where: n, m = string lengths, k = candidates in phonetic group
 -  Titles and honorifics (Dr., Mr., Prof.)
 -  Truncated names (Blankenship ↔ Blankesh)
 -  Missing components (Philip Charles ↔ Philip)
-- ✅ Out-of-order components
-- ✅ Initials
-- ✅ Name split inconsistencies
-- ✅ Semantically similar terms
-- ✅ Abbreviations
+-  Out-of-order components
+-  Initials
+-  Name split inconsistencies
+-  Semantically similar terms
+-  Abbreviations
 
 ## Learning Outcomes
 
@@ -277,17 +277,4 @@ Where: n, m = string lengths, k = candidates in phonetic group
 - Jaro-Winkler Distance: [William E. Winkler, 1990]
 - Damerau-Levenshtein: [Frederick J. Damerau, 1964]
 
-## License
 
-Educational project - free to use and modify for learning purposes.
-
-## Contact
-
-Project Supervisor: Santhosh Navale (navale.santhosh@gmail.com)
-
----
-
-**Course**: Internship on "Noun Obstacles and Phonetics"  
-**Duration**: 1 Month (June 10th - July 10th)  
-**Target Group**: Electronics and Communication Engineering (ECE)  
-**Client**: Public Sector Departments
