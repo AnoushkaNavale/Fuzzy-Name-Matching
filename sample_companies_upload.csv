@@ -1,0 +1,21 @@
+record_id,company_name,city,country,source
+1,Microsoft Corporation,Redmond,USA,crm
+2,Microsoft Corp,Redmond,USA,billing
+3,Micro Soft Corporation,Redmond,USA,legacy
+4,Apple Inc,Cupertino,USA,crm
+5,Apple Incorporated,Cupertino,USA,billing
+6,Apple Computer Inc,Cupertino,USA,legacy
+7,Google LLC,Mountain View,USA,crm
+8,Google Limited Liability Company,Mountain View,USA,billing
+9,Alphabet Inc,Mountain View,USA,vendor
+10,Amazon.com Inc,Seattle,USA,crm
+11,Amazon Inc,Seattle,USA,billing
+12,Amazon Web Services,Seattle,USA,vendor
+13,Tesla Motors,Austin,USA,legacy
+14,Tesla Inc,Austin,USA,crm
+15,Meta Platforms Inc,Menlo Park,USA,crm
+16,Facebook Inc,Menlo Park,USA,legacy
+17,International Business Machines,Armonk,USA,crm
+18,IBM Corporation,Armonk,USA,billing
+19,Netflix Inc,Los Gatos,USA,crm
+20,Net Flix Incorporated,Los Gatos,USA,legacy

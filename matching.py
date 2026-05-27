@@ -5,9 +5,9 @@ Orchestrates the entity resolution process
 
 import pandas as pd
 from typing import List, Dict, Tuple, Optional
-from .preprocessing import prepare_for_matching
-from .blocking import create_optimal_blocks
-from .scoring import SimilarityScorer, classify_match, explain_match
+from preprocessing import prepare_for_matching
+from blocking import create_optimal_blocks
+from scoring import SimilarityScorer, classify_match, explain_match
 
 
 class EntityResolver:
@@ -254,7 +254,7 @@ def compare_two_names(
     Returns:
         Dictionary with comparison results
     """
-    from .preprocessing import TextPreprocessor
+    from preprocessing import TextPreprocessor
     
     preprocessor = TextPreprocessor()
     scorer = SimilarityScorer()

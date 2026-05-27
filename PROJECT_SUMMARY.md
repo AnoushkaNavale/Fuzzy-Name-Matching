@@ -9,7 +9,7 @@ A **production-ready, scalable entity resolution system** that:
 - Provides explainable results showing why records matched
 - Includes a user-friendly web interface built with Streamlit
 
-## 🎯 Key Improvements Over Basic Fuzzy Matching
+## Key Improvements Over Basic Fuzzy Matching
 
 ### 1. **Performance Optimization**
 - **Before**: Brute-force O(n²) comparison
@@ -142,7 +142,7 @@ A **production-ready, scalable entity resolution system** that:
     - rapidfuzz
     - streamlit
 
-## 🚀 How to Use
+## How to Use
 
 ### Method 1: Web Interface
 ```bash
@@ -167,7 +167,7 @@ result = compare_two_names("Name 1", "Name 2")
 print(result['similarity_score'])
 ```
 
-## 📊 Performance Results
+## Performance Results
 
 **Test on 120 records:**
 - Processing time: 0.95 seconds
@@ -269,7 +269,7 @@ Score = 0.3×Levenshtein + 0.3×TokenSort + 0.2×TokenSet + 0.2×Jaccard
 <70 → No Match
 ```
 
-## 💡 Key Features
+## Key Features
 
 1. **Zero Configuration**: Works out-of-the-box with defaults
 2. **Flexible**: Fully customizable thresholds and strategies
@@ -279,7 +279,7 @@ Score = 0.3×Levenshtein + 0.3×TokenSort + 0.2×TokenSet + 0.2×Jaccard
 6. **Production-Ready**: Tested, documented, maintained
 7. **Extensible**: Easy to add new metrics or strategies
 
-## 🔍 Example Output
+## Example Output
 
 ```
 Match Found:
@@ -306,7 +306,7 @@ Match Found:
 | Blocking | No | Yes (4 strategies) |
 | Code Quality | Script | Production modules |
 
-## 🎯 Use Cases
+## Use Cases
 
 1. **Customer Deduplication**: Find duplicate customer records
 2. **Company Matching**: Match companies across databases

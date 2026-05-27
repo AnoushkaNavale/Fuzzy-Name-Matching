@@ -63,7 +63,7 @@ def test_batch_processing():
         name_type='organization'
     )
     
-    print(f"\n📊 Statistics:")
+    print(f"\nStatistics:")
     print(f"  Total Records: {stats['total_records']}")
     print(f"  Candidate Pairs: {stats['candidate_pairs']:,}")
     print(f"  Total Matches: {stats['total_matches']}")
@@ -72,7 +72,7 @@ def test_batch_processing():
     print(f"  Blocking Reduction: {stats['blocking_reduction']*100:.1f}%")
     print(f"  Avg Similarity: {stats['avg_similarity']:.1f}")
     
-    print(f"\n🎯 Top Matches:")
+    print(f"\nTop Matches:")
     if len(df_matches) > 0:
         for idx, row in df_matches.head(5).iterrows():
             print(f"\n  {row['name_1']} ↔ {row['name_2']}")
@@ -157,7 +157,7 @@ def test_performance():
     
     elapsed = time.time() - start_time
     
-    print(f"\n⚡ Performance:")
+    print(f"\nPerformance:")
     print(f"  Time: {elapsed:.2f} seconds")
     print(f"  Records/second: {len(df)/elapsed:.1f}")
     print(f"  Pairs evaluated: {stats['candidate_pairs']:,}")

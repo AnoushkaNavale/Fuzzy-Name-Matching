@@ -92,9 +92,9 @@ for m in matches[:5]:
 
 | Type | Score | Meaning |
 |------|-------|---------|
-| 🟢 **Strong Match** | ≥85% | Very likely the same entity |
-| 🟡 **Possible Match** | 70-85% | Needs manual review |
-| 🔴 **No Match** | <70% | Different entities |
+| **Strong Match** | ≥85% | Very likely the same entity |
+| **Possible Match** | 70-85% | Needs manual review |
+| **No Match** | <70% | Different entities |
 
 ### Similarity Metrics
 
@@ -119,7 +119,7 @@ Each match shows 4 scores:
 ### Example Output
 
 ```
-🟢 Strong Match #1 (92% confidence)
+Strong Match #1 (92% confidence)
 Record 1: microsoft corp
 Record 2: microsoft corporation
 
