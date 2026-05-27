@@ -2,7 +2,7 @@
 
 A production-ready, scalable entity resolution system for matching and deduplicating records using advanced fuzzy matching techniques.
 
-## 🎯 Features
+##  Features
 
 ### Core Capabilities
 - **Advanced Matching**: Hybrid scoring combining Levenshtein, Token Sort/Set, and Jaccard similarity
@@ -19,7 +19,7 @@ A production-ready, scalable entity resolution system for matching and deduplica
 - **Memory Efficient**: Processes data in chunks when needed
 - **Speed**: Typically 90-99% reduction in comparisons vs brute force
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 entity_resolution/
@@ -33,7 +33,7 @@ entity_resolution/
 └── requirements.txt     # Dependencies
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Installation
 
@@ -93,7 +93,7 @@ print(f"Match: {result['match_type']}")
 print(f"Reason: {result['explanation']}")
 ```
 
-## 📊 How It Works
+##  How It Works
 
 ### 1. Preprocessing
 - Lowercase normalization
@@ -137,7 +137,7 @@ Score ≥ 70  → Possible Match
 Score < 70  → No Match
 ```
 
-## 🎨 Web Interface Features
+##  Web Interface Features
 
 ### Batch Processing
 - Upload CSV files
@@ -258,7 +258,7 @@ matches, stats = quick_match(
 }
 ```
 
-## 🧪 Testing
+##  Testing
 
 Run the test suite:
 
@@ -272,7 +272,7 @@ Tests include:
 3. Custom configuration
 4. Performance benchmarks
 
-## 🔍 Example Results
+##  Example Results
 
 ### Input Data
 ```
@@ -295,7 +295,7 @@ Match 2: Apple Inc ↔ Apple Incorporated
           One name contains the other (Partial: 100.0)
 ```
 
-## 🎯 Use Cases
+##  Use Cases
 
 1. **Data Deduplication**: Find duplicate customer/company records
 2. **Data Integration**: Match records across different systems
@@ -303,7 +303,7 @@ Match 2: Apple Inc ↔ Apple Incorporated
 4. **Master Data Management**: Build golden records
 5. **Search Enhancement**: Fuzzy search in databases
 
-## ⚙️ Configuration Options
+##  Configuration Options
 
 ### Blocking Strategies
 - `'multi'` - Best for accuracy (recommended)
@@ -321,7 +321,7 @@ Match 2: Apple Inc ↔ Apple Incorporated
 - **Possible Match**: 70-85 (needs review)
 - **Adjust based on your data quality and business requirements**
 
-## 🚨 Important Notes
+##  Important Notes
 
 1. **Threshold Tuning**: Start with defaults (85/70), adjust based on results
 2. **Blocking Strategy**: Use 'multi' for best results, 'token' for speed
@@ -329,7 +329,7 @@ Match 2: Apple Inc ↔ Apple Incorporated
 4. **Memory**: System loads entire dataset into memory
 5. **Performance**: Blocking is crucial for large datasets (>1000 records)
 
-## 📚 Architecture
+##  Architecture
 
 ### Design Principles
 1. **Modularity**: Each component is independent and testable
@@ -345,7 +345,7 @@ Match 2: Apple Inc ↔ Apple Incorporated
 - `BlockingStrategy`: Comparison reduction
 - `SimilarityScorer`: Multi-metric scoring
 
-## 🔄 Comparison to FuzzyWuzzy
+##  Comparison to FuzzyWuzzy
 
 | Feature | FuzzyWuzzy | This System |
 |---------|-----------|-------------|
@@ -357,18 +357,4 @@ Match 2: Apple Inc ↔ Apple Incorporated
 | UI | No | Streamlit included |
 | Scalability | Poor | Excellent |
 
-## 📄 License
 
-Open source - free to use and modify
-
-## 🤝 Contributing
-
-Suggestions and improvements welcome!
-
-## 📞 Support
-
-For issues or questions, refer to the test examples in `test_system.py`
-
----
-
-**Built for production use** • **Fast** • **Accurate** • **Explainable**
