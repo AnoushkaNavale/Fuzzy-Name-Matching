@@ -2,6 +2,10 @@
 
 A production-ready, scalable entity resolution system for matching and deduplicating records using advanced fuzzy matching techniques.
 
+## Live Demo
+
+Try the deployed app here: [Fuzzy Name Matching App](https://fuzzy-name-matching-m3uv7gsawky6w2bo8thmdb.streamlit.app/)
+
 ##  Features
 
 ### Core Capabilities
@@ -46,7 +50,7 @@ pip install -r requirements.txt
 
 ```bash
 # Launch Streamlit app
-streamlit run entity_resolution/app.py
+streamlit run app.py
 ```
 
 Then:
@@ -356,5 +360,6 @@ Match 2: Apple Inc ↔ Apple Incorporated
 | Thresholds | Manual | Automatic classification |
 | UI | No | Streamlit included |
 | Scalability | Poor | Excellent |
+
 
 
